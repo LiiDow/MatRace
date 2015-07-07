@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Walid
+ * @author med Reda Benchraa
  */
 public class Accept extends javax.swing.JFrame {
 
@@ -29,6 +29,7 @@ public class Accept extends javax.swing.JFrame {
      */
     Timer timer;
     boolean acp = false;
+
     public Accept() {
         try {
             c = new Connection();
@@ -40,43 +41,47 @@ public class Accept extends javax.swing.JFrame {
             Logger.getLogger(Accept.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     class RemindTask extends TimerTask {
 
         public void run() {
-            try  {
+            try {
                 Statement t = c.con.createStatement();
-                t.executeUpdate("update player set online = 1 where id_player = "+player());
+                t.executeUpdate("update player set online = 1 where id_player = " + player());
                 Statement st = c.con.createStatement();
-                ResultSet r = st.executeQuery("SELECT accepted From game where idp1 = "+player());
+                ResultSet r = st.executeQuery("SELECT accepted From game where idp1 = " + player());
                 r.next();
-                
-                if(r.getInt("accepted") == 1 ){
+
+                if (r.getInt("accepted") == 1) {
                     acp();
-                new MainGame().setVisible(true); 
-                timer.cancel();
-                timer.purge();
+                    new MainGame().setVisible(true);
+                    timer.cancel();
+                    timer.purge();
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Accept.class.getName()).log(Level.SEVERE, null, ex);
             }
-    }}
-    public  void acp(){
+        }
+    }
+
+    public void acp() {
         this.dispose();
     }
-public int player(){
-     int id = 1;
-        try{
+
+    public int player() {
+        int id = 1;
+        try {
             FileReader getNameP;
             getNameP = new FileReader("player.txt");
             BufferedReader br = new BufferedReader(getNameP);
-           String PlayerName = br.readLine();
+            String PlayerName = br.readLine();
             getNameP.close();
             Statement st = c.con.createStatement();
             String S = "SELECT * from player where name = '" + PlayerName + "'";
-            ResultSet r =  st.executeQuery(S);
+            ResultSet r = st.executeQuery(S);
             r.next();
             id = r.getInt("id_player");
-     }catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,9 +89,9 @@ public int player(){
             Logger.getLogger(Pick.class.getName()).log(Level.SEVERE, null, ex);
         }
         return id;
-             
- }
-  
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -156,7 +161,7 @@ public int player(){
             }
         });
     }
-Connection c;
+    Connection c;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

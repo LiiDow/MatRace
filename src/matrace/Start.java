@@ -15,28 +15,27 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import matrace.MainGame;
 
 /**
  *
- * @author Reda ben
+ * @author med Reda Becnhraa
  */
 public class Start extends javax.swing.JFrame {
 
     /**
      * Creates new form Start
      */
-    
     public Start() {
         try {
             initComponents();
-            c= new Connection();
+            c = new Connection();
         } catch (SQLException ex) {
             Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
- 
-    private int[] imgt ={1,2,3};
+
+    private int[] imgt = {1, 2, 3};
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -152,7 +151,7 @@ public class Start extends javax.swing.JFrame {
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/matrace/BeginP.png"))); // NOI18N
-        
+
     }//GEN-LAST:event_jLabel4MousePressed
 
     private void jLabel4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseReleased
@@ -164,27 +163,29 @@ public class Start extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
-        if(jTextField1.getText().equals("Type you name")){
+        if (jTextField1.getText().equals("Type you name")) {
             jTextField1.setText("");
         }
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             try {
-            Statement st = c.con.createStatement();
-            String S = "SELECT name from player where name = '"+ jTextField1.getText()+"'";
-            ResultSet r = st.executeQuery(S);
-            if(!r.next()){
-                String sql = "Insert into player(name,score,x,y,avatar) values('"+jTextField1.getText()+"',"+0+","+0+","+0+","+selectedAvatar+")";
-                st.executeUpdate(sql);
-                String name = jTextField1.getText();
-                registerPlayer(name);
-                this.dispose();
-                new Pick().setVisible(true);   
-            }else System.out.println("Exist"); 
-        } catch (SQLException ex) {
-            Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
+                Statement st = c.con.createStatement();
+                String S = "SELECT name from player where name = '" + jTextField1.getText() + "'";
+                ResultSet r = st.executeQuery(S);
+                if (!r.next()) {
+                    String sql = "Insert into player(name,score,x,y,avatar) values('" + jTextField1.getText() + "'," + 0 + "," + 0 + "," + 0 + "," + selectedAvatar + ")";
+                    st.executeUpdate(sql);
+                    String name = jTextField1.getText();
+                    registerPlayer(name);
+                    this.dispose();
+                    new Pick().setVisible(true);
+                } else {
+                    System.out.println("Exist");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-         }
-       
+
     }//GEN-LAST:event_jTextField1KeyPressed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
@@ -198,57 +199,57 @@ public class Start extends javax.swing.JFrame {
     int next = 1;
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
-     
-        if(next < imgt.length) {
+
+        if (next < imgt.length) {
             next++;
-        }else{
-           next = 1;
+        } else {
+            next = 1;
         }
         selectedAvatar = next;
-      jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recources/"+next+"B.png")));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recources/" + next + "B.png")));
     }//GEN-LAST:event_jLabel3MouseClicked
-int prev = imgt.length-1;
+    int prev = imgt.length - 1;
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        if(prev >= imgt.length-1) {
+        if (prev >= imgt.length - 1) {
             prev--;
-        }else{
-           prev = imgt.length;
+        } else {
+            prev = imgt.length;
         }
-                selectedAvatar = prev;
+        selectedAvatar = prev;
 
-      jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recources/"+prev+"B.png")));  
-      String avatarp = jLabel6.getIcon().toString();
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recources/" + prev + "B.png")));
+        String avatarp = jLabel6.getIcon().toString();
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         try {
             Statement st = c.con.createStatement();
-            String S = "SELECT name,online from player where name = '"+ jTextField1.getText()+"'";
+            String S = "SELECT name,online from player where name = '" + jTextField1.getText() + "'";
             ResultSet r = st.executeQuery(S);
-            if(!r.next()){
-                String sql = "Insert into player(name,score,x,y,avatar) values('"+jTextField1.getText()+"',"+0+","+0+","+0+","+selectedAvatar+")";
+            if (!r.next()) {
+                String sql = "Insert into player(name,score,x,y,avatar) values('" + jTextField1.getText() + "'," + 0 + "," + 0 + "," + 0 + "," + selectedAvatar + ")";
                 st.executeUpdate(sql);
                 String name = jTextField1.getText();
                 registerPlayer(name);
                 this.dispose();
-                new Pick().setVisible(true);   
-            }else{
-                if(r.getInt("online") != 0)
-                System.out.println("Exist");
-                else {
+                new Pick().setVisible(true);
+            } else {
+                if (r.getInt("online") != 0) {
+                    System.out.println("Exist");
+                } else {
                     System.out.println("Online");
                     String name = jTextField1.getText();
-                registerPlayer(name);
-                this.dispose();
-                new Pick().setVisible(true);  
+                    registerPlayer(name);
+                    this.dispose();
+                    new Pick().setVisible(true);
                 }
-            } 
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel4MouseClicked
-   private void registerPlayer(String name) {
+    private void registerPlayer(String name) {
         try {
             FileWriter fw = new FileWriter("player.txt");
             PrintWriter pw = new PrintWriter(fw);
@@ -258,6 +259,7 @@ int prev = imgt.length-1;
             System.out.println("Error");
         }
     }
+
     /**
      * @param args the command line arguments
      */

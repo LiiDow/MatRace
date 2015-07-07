@@ -25,16 +25,14 @@ import java.util.logging.Logger;
  *
  * @author Reda ben
  */
-public class MainGame extends javax.swing.JFrame {
+public final class MainGame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainGame
-     */
     int gameId = 1;
     Timer timer;
     int i = 0;
     boolean owner = false;
     String PlayerName = "";
+
     public MainGame() {
         try {
             cc = new Connection();
@@ -45,8 +43,7 @@ public class MainGame extends javax.swing.JFrame {
             loadPlayers();
             getGame();
             timer = new Timer();
-            timer.schedule(new RemindTask(), 0, //initial delay
-                    1 * 25);
+            timer.schedule(new RemindTask(), 0, 1 * 25);
         } catch (SQLException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -55,12 +52,12 @@ public class MainGame extends javax.swing.JFrame {
     class RemindTask extends TimerTask {
 
         public void run() {
-            if(i%400 == 0){
-                bonus[0] = (int) (Math.random()*5);
-                bonus[1] = (int) (Math.random()*6);
-                while(bonus[0] == p.x  && bonus[1] == p.y){
-                    bonus[0] = (int) (Math.random()*5);
-                    bonus[1] = (int) (Math.random()*6);
+            if (i % 400 == 0) {
+                bonus[0] = (int) (Math.random() * 5);
+                bonus[1] = (int) (Math.random() * 6);
+                while (bonus[0] == p.x && bonus[1] == p.y) {
+                    bonus[0] = (int) (Math.random() * 5);
+                    bonus[1] = (int) (Math.random() * 6);
                 }
                 jLabel6.setLocation(tab[bonus[1]][bonus[1]][1], tab[bonus[0]][bonus[1]][0]);
             }
@@ -245,47 +242,48 @@ public class MainGame extends javax.swing.JFrame {
     private void jLabel2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseReleased
         try {
             Statement st = cc.con.createStatement();
-            String sql = "update player set online=0 where name = '"+ PlayerName +"'";
+            String sql = "update player set online=0 where name = '" + PlayerName + "'";
             st.executeUpdate(sql);
             System.exit(0);
         } catch (SQLException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel2MouseReleased
-    public void loadPlayers(){
+    public void loadPlayers() {
         try {
             Statement st = cc.con.createStatement();
-            String sql = "SELECT * from player where name = '"+ PlayerName +"'";
+            String sql = "SELECT * from player where name = '" + PlayerName + "'";
             ResultSet rs = st.executeQuery(sql);
             rs.next();
-            p = new Player(rs.getInt("x"),rs.getInt("y"),rs.getInt("score"),rs.getInt("avatar"),rs.getString("name"));
-            sql = "SELECT * from player where id_player !="+ rs.getInt("id_player")+" and id_game = "+ gameId;
+            p = new Player(rs.getInt("x"), rs.getInt("y"), rs.getInt("score"), rs.getInt("avatar"), rs.getString("name"));
+            sql = "SELECT * from player where id_player !=" + rs.getInt("id_player") + " and id_game = " + gameId;
             rs = st.executeQuery(sql);
             rs.next();
-            p1 = new Player(rs.getInt("x"),rs.getInt("y"),rs.getInt("score"),rs.getInt("avatar"),rs.getString("name"));
+            p1 = new Player(rs.getInt("x"), rs.getInt("y"), rs.getInt("score"), rs.getInt("avatar"), rs.getString("name"));
         } catch (SQLException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void loadLocation(){
+
+    public void loadLocation() {
         try {
             Statement st = cc.con.createStatement();
-            String sql = "SELECT * from player where name = '"+ p.name +"'";
+            String sql = "SELECT * from player where name = '" + p.name + "'";
             ResultSet rs = st.executeQuery(sql);
             rs.next();
             p1.score = rs.getInt("score");
             p1.x = rs.getInt("x");
             p1.y = rs.getInt("y");
-            jLabel5.setLocation(tab[p.x][p.y][1],tab[p.x][p.y][0]);
-            jLabel3.setText(p.score+"");
-            sql = "SELECT * from player where name = '"+ p1.name + "'";
+            jLabel5.setLocation(tab[p.x][p.y][1], tab[p.x][p.y][0]);
+            jLabel3.setText(p.score + "");
+            sql = "SELECT * from player where name = '" + p1.name + "'";
             rs = st.executeQuery(sql);
             rs.next();
             p1.score = rs.getInt("score");
             p1.x = rs.getInt("x");
             p1.y = rs.getInt("y");
-            jLabel11.setLocation(tab[p1.x][p1.y][1],tab[p1.x][p1.y][0]);
-            jLabel10.setText(p1.score+"");
+            jLabel11.setLocation(tab[p1.x][p1.y][1], tab[p1.x][p1.y][0]);
+            jLabel10.setText(p1.score + "");
         } catch (SQLException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -301,11 +299,11 @@ public class MainGame extends javax.swing.JFrame {
         right.setText(Op.getOp());
         up.setText(Op.getOp());
         left.setText(Op.getOp());
-        bonus[0] = (int) (Math.random()*5);
-        bonus[1] = (int) (Math.random()*6);
-        while(bonus[0] == p.x  && bonus[1] == p.y){
-            bonus[0] = (int) (Math.random()*5);
-            bonus[1] = (int) (Math.random()*6);
+        bonus[0] = (int) (Math.random() * 5);
+        bonus[1] = (int) (Math.random() * 6);
+        while (bonus[0] == p.x && bonus[1] == p.y) {
+            bonus[0] = (int) (Math.random() * 5);
+            bonus[1] = (int) (Math.random() * 6);
         }
         jLabel6.setLocation(tab[bonus[0]][bonus[1]][1], tab[bonus[0]][bonus[1]][0]);
         hide();
@@ -314,8 +312,8 @@ public class MainGame extends javax.swing.JFrame {
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         intArray();
     }//GEN-LAST:event_jLabel3MouseClicked
-    public void init(){
-        
+    public void init() {
+
     }
     boolean t = false;
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
@@ -323,33 +321,33 @@ public class MainGame extends javax.swing.JFrame {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 int a = Integer.parseInt(jTextField1.getText());
                 if (a == Op.getRes(down.getText())) {
-                    p.score +=Op.getRes(down.getText());
+                    p.score += Op.getRes(down.getText());
                     movePlayer("down");
                 } else if (a == Op.getRes(right.getText())) {
-                    p.score +=Op.getRes(right.getText());
+                    p.score += Op.getRes(right.getText());
                     movePlayer("right");
                 } else if (a == Op.getRes(left.getText())) {
                     movePlayer("left");
-                    p.score +=Op.getRes(left.getText());
+                    p.score += Op.getRes(left.getText());
                 } else if (a == Op.getRes(up.getText())) {
                     movePlayer("up");
-                    p.score +=Op.getRes(up.getText());
-                }else{
-                    p.score -=20;
+                    p.score += Op.getRes(up.getText());
+                } else {
+                    p.score -= 20;
                 }
                 jTextField1.setText("");
                 hide();
             }
-            if(tab[p.x][p.y][1] == jLabel6.getLocation().x && tab[p.x][p.y][0] == jLabel6.getLocation().y){
-                p.score +=100;
-                bonus[0] = (int) (Math.random()*5);
-                bonus[1] = (int) (Math.random()*6);
+            if (tab[p.x][p.y][1] == jLabel6.getLocation().x && tab[p.x][p.y][0] == jLabel6.getLocation().y) {
+                p.score += 100;
+                bonus[0] = (int) (Math.random() * 5);
+                bonus[1] = (int) (Math.random() * 6);
                 p.stars++;
-                jLabel8.setText(p.stars+"");
+                jLabel8.setText(p.stars + "");
             }
-            jLabel3.setText(p.score+"");
+            jLabel3.setText(p.score + "");
             Statement st = cc.con.createStatement();
-            String sql = "Update player set x= "+ p.x +",y="+p.y+",score ="+p.score+ " where name = '"+ PlayerName +"'";
+            String sql = "Update player set x= " + p.x + ",y=" + p.y + ",score =" + p.score + " where name = '" + PlayerName + "'";
             st.executeUpdate(sql);
         } catch (SQLException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
@@ -469,49 +467,52 @@ public class MainGame extends javax.swing.JFrame {
         up.setText(Op.getOp());
         left.setText(Op.getOp());
     }
-    public void generateOp(){
+
+    public void generateOp() {
         down.setText(Op.getOp());
         right.setText(Op.getOp());
         up.setText(Op.getOp());
         left.setText(Op.getOp());
     }
-  public void player(){
-     try{
+
+    public void player() {
+        try {
             FileReader getNameP;
             getNameP = new FileReader("player.txt");
             BufferedReader br = new BufferedReader(getNameP);
             PlayerName = br.readLine();
             getNameP.close();
             System.out.println(PlayerName);
-     }catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
         }
-             
- }
-  public void getGame(){
-     try{
-         int i = 1;   
-         FileReader getNameP;
+
+    }
+
+    public void getGame() {
+        try {
+            int i = 1;
+            FileReader getNameP;
             getNameP = new FileReader("game.txt");
             BufferedReader br = new BufferedReader(getNameP);
             String line = br.readLine();
             int b = line.length();
             gameId = parseInt(line.substring(2, b));
-            if(line.substring(0,1).equalsIgnoreCase("0")){
+            if (line.substring(0, 1).equalsIgnoreCase("0")) {
                 owner = false;
-            }else{
+            } else {
                 owner = true;
             }
             System.out.println(gameId + " " + owner);
             getNameP.close();
-     }catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MainGame.class.getName()).log(Level.SEVERE, null, ex);
-        }      
- }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel down;
     private javax.swing.JLabel jLabel1;
@@ -534,6 +535,6 @@ public class MainGame extends javax.swing.JFrame {
     AnimationClass c;
     Player p;
     Player p1;
-    int bonus[] = new int [2];
+    int bonus[] = new int[2];
     Connection cc;
 }
